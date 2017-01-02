@@ -1,3 +1,4 @@
 node_modules
 config.js
 fakedb.json
+database.js

@@ -6,7 +6,7 @@ const requireAuth = passport.authenticate('jwt', { session: false }); // prevent
 
 
 function router (app) {
-  app.get('/', requireAuth, doStuff);
+  app.get('/need-auth', requireAuth, doStuff);
   app.post('/signup', signup);
   app.post('/login', login);
 }
