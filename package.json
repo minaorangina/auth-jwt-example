@@ -13,6 +13,9 @@
     "body-parser": "^1.15.2",
     "express": "^4.14.0",
     "express-formidable": "^1.0.0",
+    "firebase": "^3.6.4",
+    "jwt-simple": "^0.5.1",
+    "node-uuid": "^1.4.7",
     "passport": "^0.3.2",
     "passport-jwt": "^2.2.1"
   }

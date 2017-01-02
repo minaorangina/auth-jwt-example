@@ -24,7 +24,7 @@ window.addEventListener('load', function () {
       body: data
     })
     .then((res) => {
-      console.log(response);
+      console.table(response);
     })
     .catch(err => console.error);
   }
