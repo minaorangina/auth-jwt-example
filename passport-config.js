@@ -8,11 +8,15 @@ const { secret } = require('./config');
 const localLogin = new LocalStrategy(localLoginStrategy);
 
 function localLoginStrategy (username, password, done) {
-  fs.readFile('./fakedb.json', 'utf8', (err, file) => {
-    file = JSON.parse(file);
-    if (err) return done(err);
-  
-    done(null, false);
+  findUser(username, (err, user) => {
+    if (err) throw err;
+    if (!user) {
+      return done(null, false);
+    }
+    if (password !== user.password) {
+      return done(null, false);
+    }
+    return done(null, user);
   });
 }
 
@@ -28,15 +32,25 @@ const jwtLogin = new Strategy(options, loginStrategy);
 // tell passport to use this strategy
 passport.use(jwtLogin);
 
-// strategy function
+
 function loginStrategy (payload, done) {
   // check if user_id exists in db
-  fs.readFile('./fakedb.json', 'utf8', (err, file) => {
-    file = JSON.parse(file);
-    if (err) return done(err);
-    if (payload.sub in file) {
-      return done(null, file[payload.sub]);
+  findUser(payload.sub, (err, result) => {
+    if (err) throw err;
+    if (result) {
+      return done(null, result);
     }
     done(null, false);
+  });
+}
+
+function findUser (username, callback) {
+  fs.readFile('./fakedb.json', 'utf8', (err, file) => {
+    if (err) return callback(err);
+    file = JSON.parse(file);
+    if (username in file) {
+      return callback(null, { username, password: file[username] });
+    }
+    callback(null, false);
   });
 }
