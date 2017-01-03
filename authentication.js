@@ -1,6 +1,7 @@
 const jwt = require('jwt-simple');
 // const uuid = require('node-uuid');
 const fs = require('fs');
+const bcrypt = require('bcrypt');
 const { secret } = require('./config');
 const { findUser, saveUser } = require('./database');
 
@@ -29,17 +30,16 @@ exports.login = function login (req, res, next) {
   console.log(req.fields);
   const username = req.fields.username;
   const password = req.fields.password;
-  fs.readFile('fakedb.json', 'utf8', (err, file) => {
-    if (err) throw err;
-    let db = JSON.parse(file);
-
-    if (!db.hasOwnProperty(username)) {
+  findUser(username, (err, user) => {
+    if (!user) {
       return res.end('User does not exist');
     }
-    if (!db[username] === password) {
-      return res.end('Wrong username/password combination');
-    }
-    res.end('You are logged in!');
+    bcrypt.compare(password, user.password, (err, isMatch) => {
+      if (!isMatch) {
+        return res.end('Wrong password');
+      }
+      res.end('You are logged in!');
+    });
   });
 };
 
