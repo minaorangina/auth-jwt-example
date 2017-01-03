@@ -1,7 +1,20 @@
 const passport = require('passport');
 const { Strategy, ExtractJwt } = require('passport-jwt');
+const LocalStrategy = require('passport-local');
 const fs = require('fs');
 const { secret } = require('./config');
+
+// create local strategy
+const localLogin = new LocalStrategy(localLoginStrategy);
+
+function localLoginStrategy (username, password, done) {
+  fs.readFile('./fakedb.json', 'utf8', (err, file) => {
+    file = JSON.parse(file);
+    if (err) return done(err);
+  
+    done(null, false);
+  });
+}
 
 // tell passport where to find the JWT in the request
 const options = {
@@ -18,8 +31,6 @@ passport.use(jwtLogin);
 // strategy function
 function loginStrategy (payload, done) {
   // check if user_id exists in db
-  // true --> done(null, user);
-  // false --> done(null, false);
   fs.readFile('./fakedb.json', 'utf8', (err, file) => {
     file = JSON.parse(file);
     if (err) return done(err);

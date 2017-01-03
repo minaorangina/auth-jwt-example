@@ -24,6 +24,9 @@ exports.signup = function signup (req, res, next) {
 };
 
 exports.login = function login (req, res, next) {
+  // use local strategy to authenticate with username/password
+  // check someones credentials
+  // then give them a token.
   console.log(req.fields);
   const username = req.fields.username;
   const password = req.fields.password;
