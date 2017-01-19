@@ -14,7 +14,7 @@
     "space-before-function-paren": ["error", "always"],
     "object-curly-spacing": ["error", "always"],
     "padded-blocks": 0,
-    "no-console": ["warn", {"allow": ["error"]}]
+    "no-console": 0
   },
   "env": {
     "node": true,

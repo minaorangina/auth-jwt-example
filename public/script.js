@@ -7,8 +7,11 @@ window.addEventListener('load', function () {
 
   function submitForm (e) {
     e.preventDefault();
-    sendData(this);
-    // sendDataXHR(this);
+    if (window.fetch) {
+      sendData(this);
+    } else {
+      sendDataXHR(this);
+    }
   }
 
   function sendData (form) {
@@ -24,9 +27,9 @@ window.addEventListener('load', function () {
       body: data
     })
     .then((res) => {
-      console.table(response);
+      console.table(res);
     })
-    .catch(err => console.error);
+    .catch(err => console.error(err));
   }
 
   function sendDataXHR (form) {
@@ -40,10 +43,10 @@ window.addEventListener('load', function () {
     XHR.addEventListener('load', (event) => {
       console.log(event.target);
     });
-    XHR.addEventListener('error', (event) => {
+    XHR.addEventListener('error', () => {
       console.error('Whoops...');
     });
     XHR.open('POST', form.action);
-    XHR.send(formData);
+    XHR.send(data);
   }
 });
