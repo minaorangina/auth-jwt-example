@@ -1,4 +1,4 @@
-#Authentication with Express and JSON Web Tokens
+# Authentication with Express and JSON Web Tokens
 
 This repo is an example of how you would use JSON Web Tokens (JWTs) as part of your app's authentication.  
 
